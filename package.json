@@ -1,0 +1,11 @@
+{
+  "name": "pm-back-express",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "nodemon server"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.3"
+  }
+}
