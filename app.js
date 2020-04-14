@@ -8,8 +8,8 @@ const scheduleRoutes = require( './routes/schedule' )
 mongoose.connect('mongodb+srv://admin:admin123@pmdatabase-jyrlm.mongodb.net/test?retryWrites=true&w=majority',
     { useNewUrlParser: true,
         useUnifiedTopology: true })
-    .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
+    .then(() => console.log('MongoDB Connection success'))
+    .catch(() => console.log('MongoDB Connection failure'));
 
 const app = express();
 
