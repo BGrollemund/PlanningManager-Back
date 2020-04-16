@@ -2,8 +2,8 @@ const express = require( 'express' );
 const bodyParser = require( 'body-parser' );
 const mongoose = require( 'mongoose' );
 
+const adminRoutes = require( './routes/admin' );
 const userRoutes = require( './routes/user' );
-const scheduleRoutes = require( './routes/schedule' )
 
 mongoose.connect('mongodb+srv://admin:admin123@pmdatabase-jyrlm.mongodb.net/test?retryWrites=true&w=majority',
     { useNewUrlParser: true,
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
+app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/schedules', scheduleRoutes);
 
 module.exports = app;

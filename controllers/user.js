@@ -4,35 +4,14 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Schedule = require('../models/schedule');
 
-// User
-
-exports.readAll = ( req, res, next ) => {
-    User.find()
-        .then( user => res.status(200).json(user) )
-        .catch( error => res.status(400).json({ error }) );
-};
-
-exports.readOne = ( req, res, next ) => {
-    User.findOne( { _id: req.params.id } )
-        .then( user => res.status(200).json(user) )
-        .catch( error => res.status(404).json({ error }) );
-};
-
-exports.delete = ( req, res, next ) => {
-    User.deleteOne({ _id: req.params.id })
-        .then( () => res.status(200).json({ message: 'User deleted successfully'}) )
-        .catch( error => res.status(400).json({ error }) );
-};
-
 // Authentication
-
-exports.signup = ( req, res, next ) => {
+exports.signup = (req, res) => {
     bcrypt.hash( req.body.password, 10 )
         .then( hash => {
             const user = new User( {
                 email: req.body.email,
                 password: hash,
-                role: req.body.role
+                role: 'USER'
             });
             user.save()
                 .then( () => res.status(201).json({
@@ -48,7 +27,7 @@ exports.signup = ( req, res, next ) => {
         .catch( error => { res.status(500).json({ error } ) } );
 };
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
     User.findOne( { email: req.body.email } )
         .then( user => {
             if ( ! user ) {
@@ -60,6 +39,7 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ error: 'Invalid password' });
                     }
                     res.status(200).json({
+                        role: user.role,
                         userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
@@ -74,8 +54,7 @@ exports.login = (req, res, next) => {
 };
 
 // Schedules
-
-exports.addSchedule = (req, res, next) => {
+exports.addSchedule = (req, res) => {
     User.findOne( { _id: req.body.userId } )
         .then( user => {
             const
@@ -98,7 +77,7 @@ exports.addSchedule = (req, res, next) => {
         .catch( error => res.status(404).json({ error }) );
 };
 
-exports.getSchedule = (req, res, next) => {
+exports.getSchedule = (req, res) => {
     User.findOne( { _id: req.body.userId } )
         .then( user => {
             user.schedules.forEach( el => {
@@ -112,7 +91,7 @@ exports.getSchedule = (req, res, next) => {
         .catch( error => { res.status(400).json({ error }) } );
 };
 
-exports.getSchedulesInfos = (req, res, next) => {
+exports.getSchedulesInfos = (req, res) => {
     User.findOne( { _id: req.body.userId } )
         .then( user => {
             let
@@ -139,7 +118,7 @@ exports.getSchedulesInfos = (req, res, next) => {
         .catch( error => { res.status(400).json({ error }) } );
 };
 
-exports.removeSchedule = (req, res, next) => {
+exports.removeSchedule = (req, res) => {
     User.findOne( { _id: req.body.userId } )
         .then( user => {
             const userToChange = user;
@@ -161,7 +140,7 @@ exports.removeSchedule = (req, res, next) => {
         .catch( error => res.status(404).json({ error }) );
 };
 
-exports.updateSchedule = (req, res, next) => {
+exports.updateSchedule = (req, res) => {
     User.findOne( { _id: req.body.userId } )
         .then( user => {
             for( let i=0; i<user.schedules.length; i++ ) {
