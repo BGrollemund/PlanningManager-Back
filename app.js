@@ -4,6 +4,7 @@ const mongoose = require( 'mongoose' );
 
 const adminRoutes = require( './routes/admin' );
 const userRoutes = require( './routes/user' );
+const videoRoutes = require('./routes/video');
 
 mongoose.connect('mongodb+srv://admin:admin123@pmdatabase-jyrlm.mongodb.net/test?retryWrites=true&w=majority',
     { useNewUrlParser: true,
@@ -24,5 +25,6 @@ app.use(bodyParser.json());
 
 app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/videos', videoRoutes);
 
 module.exports = app;
