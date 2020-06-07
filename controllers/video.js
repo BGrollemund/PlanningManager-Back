@@ -33,7 +33,6 @@ exports.readAllCategory = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    console.log(req.body);
     Video.updateOne( { _id: req.body._id }, {
         title: req.body.title,
         category: req.body.category,
